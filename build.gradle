@@ -2,6 +2,7 @@ plugins {
 	id 'org.springframework.boot' version '2.2.6.RELEASE'
 	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
 	id 'java'
+	id 'eclipse'
 }
 
 group = 'com.interview'
@@ -21,4 +22,22 @@ dependencies {
 
 test {
 	useJUnitPlatform()
+}
+
+eclipse {
+  classpath {
+    defaultOutputDir = file('build/eclipse/main')
+    file {
+      whenMerged {
+        entries.each { source ->
+          if (source.kind == 'src' && source.path.startsWith('src/main')) { 
+            source.output = "build/eclipse/main"
+          }
+          if (source.kind == 'src' && source.path.startsWith('src/test')) { 
+            source.output = "build/eclipse/test"
+          }
+        }
+      }
+    }
+  }
 }
