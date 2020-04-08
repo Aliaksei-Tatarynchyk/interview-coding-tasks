@@ -11,7 +11,7 @@ import java.util.Map.Entry;
  * order of chars. "aab" and "abb" have the same character set but they have different
  * count of occurences of characters 'a' and 'b'.
  *
- * Time complexity is O(2N) = O(N);
+ * Time complexity is O(N);
  * Space complexity is O(N);
  *
  * @author Aliaksei Tatarynchyk
@@ -42,34 +42,28 @@ public class ScramblingPalyndromesChecker {
             return new Result(firstWord, secondWord, false, "words have different lengths");
         }
 
-        final int palyndromeLength = firstWord.length(); // as both words have equal length, I can assign length of any
+        Map<Character, Integer> wordCharOccurrences = new HashMap<>(firstWord.length());
 
-        Map<Character, Integer> firstWordCharOccurences = new HashMap<>(palyndromeLength);
-        Map<Character, Integer> secondWordCharOccurences = new HashMap<>(palyndromeLength);
-
-        // add all characters to maps
-        for (int i = 0; i < palyndromeLength; i++) {
-            upsertCharOccurence(firstWordCharOccurences, firstWord.charAt(i));
-            upsertCharOccurence(secondWordCharOccurences, secondWord.charAt(i));
+        for (int i = 0; i < firstWord.length(); i++) {
+            increaseOccurence(wordCharOccurrences, firstWord.charAt(i));
+            decreaseOccurence(wordCharOccurrences, secondWord.charAt(i));
         }
 
-        // compare key sets
-        if (!firstWordCharOccurences.keySet().equals(secondWordCharOccurences.keySet())) {
-            return new Result(firstWord, secondWord, false, "words have different sets of chars");
-        }
-
-        // compare values
-        for (Entry<Character, Integer> characterEntry : firstWordCharOccurences.entrySet()) {
-            if (!characterEntry.getValue().equals(secondWordCharOccurences.get(characterEntry.getKey()))) {
-                return new Result(firstWord, secondWord, false, "words have different counts of chars");
+        for (Entry<Character, Integer> wordCharOccurrence : wordCharOccurrences.entrySet()) {
+            if (wordCharOccurrence.getValue() != 0) {
+                return new Result(firstWord, secondWord, false, "words have different sets of chars");
             }
         }
 
         return new Result(firstWord, secondWord, true, "words are palyndromes");
     }
 
-    private Integer upsertCharOccurence(Map<Character, Integer> map, char character) {
+    private Integer increaseOccurence(Map<Character, Integer> map, char character) {
         return map.put(character, map.getOrDefault(character, 0) + 1);
+    }
+
+    private Integer decreaseOccurence(Map<Character, Integer> map, char character) {
+        return map.put(character, map.getOrDefault(character, 0) - 1);
     }
 
     public static class Result {
