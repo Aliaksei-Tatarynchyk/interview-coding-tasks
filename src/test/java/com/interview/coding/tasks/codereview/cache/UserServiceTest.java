@@ -11,11 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
-import com.interview.coding.tasks.DemoApplication;
-
 @ActiveProfiles("test")
 @ExtendWith(MockitoExtension.class)
-@SpringBootTest(classes = DemoApplication.class)
+@SpringBootTest
 public class UserServiceTest {
 
     @Autowired
