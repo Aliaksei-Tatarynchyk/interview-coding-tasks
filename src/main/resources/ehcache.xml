@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="ehcache.xsd"
+         updateCheck="false" dynamicConfig="true">
+
+  <cache name="users"
+         maxEntriesLocalHeap="100"
+         eternal="false"
+         timeToIdleSeconds="300" 
+         timeToLiveSeconds="600"
+         memoryStoreEvictionPolicy="LFU"
+         diskPersistent="false"/>
+
+</ehcache>

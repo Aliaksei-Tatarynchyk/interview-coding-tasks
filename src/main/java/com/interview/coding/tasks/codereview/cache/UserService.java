@@ -1,11 +1,7 @@
 package com.interview.coding.tasks.codereview.cache;
 
-import java.time.LocalDateTime;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 /**
@@ -16,36 +12,13 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class UserService {
-    private final Map<String, User> cache = new ConcurrentHashMap<>();
-    private volatile LocalDateTime lastCacheRefreshTime = LocalDateTime.now();
-
-    @Value("${user.cache.time.to.live.seconds}")
-    private Integer cacheTimeToLiveSeconds = 300;
 
     @Autowired
     private UserDAO userDAO;
 
+    @Cacheable(cacheNames = "users", key = "#id")
     public User getUser(String id) {
-        if (isStaleCache()) {
-            refreshCache();
-        } else if (cache.containsKey(id)) {
-            return cache.get(id);
-        }
-
-        User user = userDAO.find(id);
-        if (user != null) {
-            cache.put(id, user);
-        }
-
-        return user;
+        return userDAO.find(id);
     }
 
-    private boolean isStaleCache() {
-        return LocalDateTime.now().minusSeconds(cacheTimeToLiveSeconds).isAfter(lastCacheRefreshTime);
-    }
-
-    private void refreshCache() {
-        cache.clear();
-        lastCacheRefreshTime = LocalDateTime.now();
-    }
 }
