@@ -4,6 +4,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.atMostOnce;
 
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -23,12 +24,14 @@ public class UserServiceTest {
     UserDAO userDAO;
 
     @Test
-    public void userRequests_shouldBeCached() {
+    public void getUser_shouldBeCached() {
         given(userDAO.find("u1234")).willReturn(new User("u1234", "Vasia Pupkin"));
 
-        userService.getUser("u1234");
-        userService.getUser("u1234");
+        User userFromDAO = userService.getUser("u1234");
+        User userFromCache = userService.getUser("u1234");
 
         then(userDAO).should(atMostOnce()).find("u1234");
+        Assertions.assertThat(userFromCache).isEqualTo(userFromDAO);
     }
+
 }
