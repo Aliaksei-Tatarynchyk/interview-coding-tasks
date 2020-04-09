@@ -2,9 +2,7 @@ package com.interview.coding.tasks;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
+import java.util.Optional;
 
 /**
  * Checks whether 2 words are palyndromes. Palyndromes in this particular context means
@@ -44,36 +42,20 @@ public class ScramblingPalyndromesChecker {
             return false;
         }
 
-        Map<Character, Integer> wordCharOccurrences = new HashMap<>(firstWord.length());
+        Map<Integer, Integer> charOccurrences = new HashMap<>(firstWord.length());
 
-        // I'm not sure it's better than the option below, it is neither shorter nor clearer. But it uses Java 8.
-        IntStream.range(0, firstWord.length()).forEach(i -> {
-            wordCharOccurrences.merge(firstWord.charAt(i), 1, (current, update) -> current + update);
-            wordCharOccurrences.merge(secondWord.charAt(i), -1, (current, update) -> current + update);
-        });
+        firstWord.chars().forEach(c -> increaseCharOccurrences(charOccurrences, c, 1));
+        secondWord.chars().forEach(c -> increaseCharOccurrences(charOccurrences, c, -1));
 
-//        for (int i = 0; i < firstWord.length(); i++) {
-//            wordCharOccurrences.merge(firstWord.charAt(i), 1, (current, update) -> current + update);
-//            wordCharOccurrences.merge(secondWord.charAt(i), -1, (current, update) -> current + update);
-//        }
+        Optional<Integer> nonZeroCharOccurrence = charOccurrences.values().stream()
+                .filter(occurrencesCount -> occurrencesCount != 0 )
+                .findAny();
 
-//        for (int i = 0; i < firstWord.length(); i++) {
-//            wordCharOccurrences.put(firstWord.charAt(i), wordCharOccurrences.getOrDefault(character, 0) + 1);
-//            wordCharOccurrences.put(secondWord.charAt(i), wordCharOccurrences.getOrDefault(character, 0) - 1);
-//        }
+        return !nonZeroCharOccurrence.isPresent();
+    }
 
-//        for (int i = 0; i < firstWord.length(); i++) {
-//            increaseOccurence(wordCharOccurrences, firstWord.charAt(i));
-//            decreaseOccurence(wordCharOccurrences, secondWord.charAt(i));
-//        }
-
-        for (Entry<Character, Integer> wordCharOccurrence : wordCharOccurrences.entrySet()) {
-            if (wordCharOccurrence.getValue() != 0) {
-                return false;
-            }
-        }
-
-        return true;
+    private Integer increaseCharOccurrences(Map<Integer, Integer> charOccurrences, int character, int increaseBy) {
+        return charOccurrences.merge(character, increaseBy, (oldValue, newValue) -> oldValue + newValue);
     }
 
 }
