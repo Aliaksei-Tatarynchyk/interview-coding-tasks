@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 /**
  * https://leetcode.com/problems/valid-parentheses/
@@ -45,19 +46,19 @@ public class ValidParentheses {
         runAlgorithm(ValidParentheses::checkValidParenthesesStackOptimized, "Stack optimized");
     }
 
-    private static void runAlgorithm(Function<String, Boolean> algorithm, String algorithmName) {
+    private static void runAlgorithm(Predicate<String> algorithm, String algorithmName) {
         System.out.println(algorithmName);
-        System.out.println(algorithm.apply(null)); // Output: true
-        System.out.println(algorithm.apply("(){")); // Output: false
-        System.out.println(algorithm.apply("()}")); // Output: false
-        System.out.println(algorithm.apply("((")); // Output: false
-        System.out.println(algorithm.apply("))")); // Output: false
-        System.out.println(algorithm.apply("()}}")); // Output: false
-        System.out.println(algorithm.apply("()")); // Output: true
-        System.out.println(algorithm.apply("()[]{}")); // Output: true
-        System.out.println(algorithm.apply("(]")); // Output: false
-        System.out.println(algorithm.apply("([)]")); // Output: false
-        System.out.println(algorithm.apply("{[]}")); // Output: true
+        System.out.println(algorithm.test(null)); // Output: true
+        System.out.println(algorithm.test("(){")); // Output: false
+        System.out.println(algorithm.test("()}")); // Output: false
+        System.out.println(algorithm.test("((")); // Output: false
+        System.out.println(algorithm.test("))")); // Output: false
+        System.out.println(algorithm.test("()}}")); // Output: false
+        System.out.println(algorithm.test("()")); // Output: true
+        System.out.println(algorithm.test("()[]{}")); // Output: true
+        System.out.println(algorithm.test("(]")); // Output: false
+        System.out.println(algorithm.test("([)]")); // Output: false
+        System.out.println(algorithm.test("{[]}")); // Output: true
     }
 
     /**

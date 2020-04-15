@@ -14,6 +14,7 @@ import java.util.Optional;
  * Time complexity is O(N);
  * Space complexity is O(N);
  *
+ * This task came from interview to Vanguard (April 07, 2020)
  * @author Aliaksei Tatarynchyk
  */
 public class ScramblingPalyndromesChecker {

@@ -3,7 +3,6 @@ package com.interview.coding.tasks.google.preparation;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.function.Function;
 import java.util.function.Predicate;
 
 /**
@@ -27,18 +26,18 @@ import java.util.function.Predicate;
 public class ContainsDuplicate {
 
     public static void main(String[] args) {
-        runAlgorithm(ContainsDuplicate::containsDuplicatesNaive, "Naive");
+        runAlgorithm(ContainsDuplicate::containsDuplicatesBruteforce, "Bruteforce");
         runAlgorithm(ContainsDuplicate::containsDuplicatesWithSorting, "With Sorting");
         runAlgorithm(ContainsDuplicate::containsDuplicatesWithHashSet, "With HashSet");
     }
 
-    private static void runAlgorithm(Function<int[], Boolean> algorithm, String algorithmName) {
+    private static void runAlgorithm(Predicate<int[]> algorithm, String algorithmName) {
         System.out.println(algorithmName);
-        System.out.println(algorithm.apply(null)); // Output: false
-        System.out.println(algorithm.apply(new int[]{1})); // Output: false
-        System.out.println(algorithm.apply(new int[]{1, 2, 3, 1})); // Output: true
-        System.out.println(algorithm.apply(new int[]{1, 2, 3, 4})); // Output: false
-        System.out.println(algorithm.apply(new int[]{1, 1, 1, 3, 3, 4, 3, 2, 4, 2})); // Output: true
+        System.out.println(algorithm.test(null)); // Output: false
+        System.out.println(algorithm.test(new int[]{1})); // Output: false
+        System.out.println(algorithm.test(new int[]{1, 2, 3, 1})); // Output: true
+        System.out.println(algorithm.test(new int[]{1, 2, 3, 4})); // Output: false
+        System.out.println(algorithm.test(new int[]{1, 1, 1, 3, 3, 4, 3, 2, 4, 2})); // Output: true
     }
 
     /**
@@ -52,7 +51,7 @@ public class ContainsDuplicate {
      * @param nums - array of integers
      * @return true if there are some duplicates in <code>nums</code>
      */
-    public static boolean containsDuplicatesNaive(int[] nums) {
+    public static boolean containsDuplicatesBruteforce(int[] nums) {
         if (isNullOrEmptyOrContainsSingleElement(nums)) return false;
 
         for (int i = 0; i < nums.length; i++) { // O(n)
