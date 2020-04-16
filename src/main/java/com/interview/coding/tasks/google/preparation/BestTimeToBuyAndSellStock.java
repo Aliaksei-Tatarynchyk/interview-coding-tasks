@@ -58,7 +58,6 @@ public class BestTimeToBuyAndSellStock {
             return 0;
         }
 
-        // find min price index
         int minPrice = prices[0];
         int maxProfit = 0;
         for (int i = 1; i < prices.length; i++) { // O(n)
